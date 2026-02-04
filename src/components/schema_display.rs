@@ -15,11 +15,10 @@ pub fn SchemaDisplay(
     let code_ref = create_node_ref::<html::Code>();
 
     create_effect(move |_| {
-        if json_type.get().is_some() {
-            if let Some(element) = code_ref.get() {
+        if json_type.get().is_some()
+	    && let Some(element) = code_ref.get() {
                 highlightElement(&element);
             }
-        }
     });
 
     view! {

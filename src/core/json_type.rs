@@ -63,11 +63,6 @@ impl JoinSemilattice for JsonType {
 		rhs.push(lhs.clone());
 		Union(rhs)
 	    }
-	    (lhs, Union(rhs)) => {
-		let mut rhs = rhs.clone();
-		rhs.push(lhs.clone());
-		Union(rhs)
-	    }
 	    (lhs, rhs) => Union(vec![lhs.clone(), rhs.clone()])
 	}
     }
@@ -76,7 +71,6 @@ impl JoinSemilattice for JsonType {
 impl JsonType {
     /// Infer schema from a serde_json::Value
     pub fn infer(value: &serde_json::Value) -> Self {
-	use JsonType::*;
         match value {
             serde_json::Value::Null => JsonType::Null,
             serde_json::Value::Bool(_) => JsonType::Bool,
@@ -85,7 +79,7 @@ impl JsonType {
             serde_json::Value::Array(arr) => {
 		let inferred_types: Vec<JsonType> = arr
 		    .iter()
-		    .map(|obj| Self::infer(obj))
+		    .map(Self::infer)
 		    .collect();
 		let vals: JsonType = Self::unify(&inferred_types);
 		JsonType::Array(Box::new(vals))
@@ -100,10 +94,10 @@ impl JsonType {
         }
     }
 
-    pub fn unify(json_types: &Vec<JsonType>) -> Self {
+    pub fn unify(json_types: &[JsonType]) -> Self {
 	json_types
-	    .into_iter()
-	    .fold(JsonType::bot(), |acc, ty| JsonType::join(&acc, &ty))
+	    .iter()
+	    .fold(JsonType::bot(), |acc, ty| JsonType::join(&acc, ty))
     }
 
 
@@ -123,10 +117,10 @@ impl JsonType {
 		for (k,v) in objects {
 		    object.insert(k.to_string(),v.to_pretty_json());
 		}
-		return Value::Object(object)
+		Value::Object(object)
 	    },
 	    JsonType::Union(unions) => {
-		let unions : Vec<Value> = unions.into_iter().map(|obj| obj.to_pretty_json()).collect::<Vec<_>>();
+		let unions : Vec<Value> = unions.iter().map(|obj| obj.to_pretty_json()).collect::<Vec<_>>();
 		json!({
 		"union": unions
 	    })},
@@ -137,7 +131,7 @@ impl JsonType {
 	let formatter = serde_json::ser::PrettyFormatter::with_indent(b"    ");
 	let mut buf = Vec::new();
 	let mut ser = serde_json::Serializer::with_formatter(&mut buf, formatter);
-	self.serialize(&mut ser).unwrap();
+	self.to_pretty_json().serialize(&mut ser).unwrap();
 	String::from_utf8(buf).unwrap()
     }
 }

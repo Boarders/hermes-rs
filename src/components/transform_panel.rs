@@ -19,10 +19,9 @@ pub fn TransformPanel(
     let result_ref = create_node_ref::<html::Code>();
 
     create_effect(move |_| {
-        if transform_result.get().is_some() {
-            if let Some(element) = result_ref.get() {
+        if transform_result.get().is_some()
+	    && let Some(element) = result_ref.get() {
                 highlightElement(&element);
-            }
         }
     });
 
@@ -37,7 +36,6 @@ pub fn TransformPanel(
     };
 
     let add_transform_click = {
-        let add_transform_logic = add_transform_logic.clone();
         move |_| add_transform_logic()
     };
 
