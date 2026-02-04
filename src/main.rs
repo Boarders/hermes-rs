@@ -1,7 +1,7 @@
 use leptos::*;
 
-mod core;
 mod components;
+mod core;
 mod utils;
 
 use components::App;

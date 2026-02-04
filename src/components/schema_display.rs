@@ -1,6 +1,6 @@
+use crate::core::JsonType;
 use leptos::*;
 use wasm_bindgen::prelude::*;
-use crate::core::JsonType;
 
 #[wasm_bindgen]
 extern "C" {
@@ -9,16 +9,15 @@ extern "C" {
 }
 
 #[component]
-pub fn SchemaDisplay(
-    json_type: ReadSignal<Option<JsonType>>,
-) -> impl IntoView {
+pub fn SchemaDisplay(json_type: ReadSignal<Option<JsonType>>) -> impl IntoView {
     let code_ref = create_node_ref::<html::Code>();
 
     create_effect(move |_| {
         if json_type.get().is_some()
-	    && let Some(element) = code_ref.get() {
-                highlightElement(&element);
-            }
+            && let Some(element) = code_ref.get()
+        {
+            highlightElement(&element);
+        }
     });
 
     view! {

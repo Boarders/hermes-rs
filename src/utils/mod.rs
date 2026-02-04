@@ -1,3 +1,3 @@
 pub mod json;
-pub use json::{truncate_json, pp_json};
+pub use json::{pp_json, truncate_json};
 pub mod semilattice;

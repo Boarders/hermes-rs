@@ -1,7 +1,7 @@
-use leptos::*;
-use wasm_bindgen::prelude::*;
-use serde_json::Value;
 use crate::core::{Transform, TransformPipeline};
+use leptos::*;
+use serde_json::Value;
+use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {
@@ -20,8 +20,9 @@ pub fn TransformPanel(
 
     create_effect(move |_| {
         if transform_result.get().is_some()
-	    && let Some(element) = result_ref.get() {
-                highlightElement(&element);
+            && let Some(element) = result_ref.get()
+        {
+            highlightElement(&element);
         }
     });
 
@@ -35,9 +36,7 @@ pub fn TransformPanel(
         }
     };
 
-    let add_transform_click = {
-        move |_| add_transform_logic()
-    };
+    let add_transform_click = { move |_| add_transform_logic() };
 
     let add_transform_keyup = {
         move |ev: web_sys::KeyboardEvent| {

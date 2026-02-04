@@ -1,5 +1,5 @@
-use serde_json::{Value, Map, Result};
 use serde_json::to_string_pretty;
+use serde_json::{Map, Result, Value};
 
 /// Pretty print JSON
 pub fn pp_json(json: &Value) -> Result<String> {
@@ -34,7 +34,10 @@ pub fn truncate_json(value: &Value, depth: usize) -> Value {
                     // Show first element truncated and indicate more
                     let first = truncate_json(&arr[0], depth - 1);
                     if arr.len() > 1 {
-                        Value::Array(vec![first, Value::String(format!("... ({} more)", arr.len() - 1))])
+                        Value::Array(vec![
+                            first,
+                            Value::String(format!("... ({} more)", arr.len() - 1)),
+                        ])
                     } else {
                         Value::Array(vec![first])
                     }

@@ -1,7 +1,7 @@
+use crate::components::{JsonInput, SchemaDisplay, TransformPanel};
+use crate::core::{JsonType, Transform, TransformPipeline};
 use leptos::*;
 use serde_json::Value;
-use crate::core::{JsonType, Transform, TransformPipeline};
-use crate::components::{JsonInput, SchemaDisplay, TransformPanel};
 
 #[component]
 pub fn App() -> impl IntoView {

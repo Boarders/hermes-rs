@@ -1,6 +1,6 @@
 use leptos::*;
-use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
+use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {
@@ -9,10 +9,7 @@ extern "C" {
 }
 
 #[component]
-pub fn JsonInput(
-    value: ReadSignal<String>,
-    on_change: WriteSignal<String>,
-) -> impl IntoView {
+pub fn JsonInput(value: ReadSignal<String>, on_change: WriteSignal<String>) -> impl IntoView {
     let code_ref = create_node_ref::<html::Code>();
 
     // Re-highlight when value changes
